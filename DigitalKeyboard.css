@@ -2,8 +2,6 @@
     width: 150px;
     height: 200px;
     border: solid 1px #DCDCDC;
-    position: absolute;
-    z-index: 99999;
     background: #ffffff;
 }
 .dgkbg-block div{
@@ -16,6 +14,7 @@
     line-height: 40px;
     padding: 13px;
     cursor: pointer;
+    box-sizing: border-box;
 }
 .dgkbg-block div span{
     height: 10px;

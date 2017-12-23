@@ -1,19 +1,17 @@
 ;(function (){    
     "use strict";
     
-    let version = '0.0.4'
+    let version = '0.0.5'
         ,lastUpdateDate = '23.12.2017';
     var isDebug = true                        //Flag debug mode
         ,mainClass = "dgkbg-block"            //Class on main block
         ,targetElementId                      //Id element for inset keyboard
     ;
-    
     /*
         Object: DigitalKeyboard, constructor
     */
     function DigitalKeyboard(){
-    }
-        
+    }   
     /*  
         Object: DigitalKeyboard, return current version
         return: String - current version
@@ -26,15 +24,15 @@
         return: HTMLNode - main element
     */
     function getKeyboardElement(){
-        return document.querySelector("."+mainClass);
+        return document.querySelector(targetElementId);
     }
     /*  
         Object: DigitalKeyboard, return HTML template keyboard
         return: String - HTML
     */
     function _templateHTML(){
-    return '\
-        <div class="'+mainClass+'" style="display:none">\
+        return '\
+        <div class="'+mainClass+'" ">\
             <input type="password" id="dgkbg_pass" value="" hidden>\
             <div data-number="1"><span></span></div>\
             <div data-number="2"><span></span></div>\
@@ -50,6 +48,9 @@
             <div id="dgkbg_enter" class="dgkbg-hide"><span class="dgkbg-hide"></span></div>\
         </div>'
     }
+    /*  
+        Object: DigitalKeyboard, private, display of control buttons depending on the current state
+    */
     function _observeInput(elem){
         let elemClear = document.querySelector("#dgkbg_clear");
         let elemEnter = document.querySelector("#dgkbg_enter");
@@ -70,6 +71,9 @@
         }
 
     }
+    /*  
+        Object: DigitalKeyboard, private, set listener of control buttons
+    */
     function _setListeners(){
         let sourceElement = document.querySelectorAll(".dgkbg-block div:not(.dgkbg-hidden):not(.dgkbg-hide)");
         let action = "click";
@@ -90,7 +94,10 @@
             _observeInput(dgkbgPass);
         }, true);    
     }
-    
+    /*  
+        Object: DigitalKeyboard, set callback function on press "enter" button
+        In: Function fnc - callback function
+    */
     function setActionOnEnter(fnc){
         var controlElement = document.querySelector("#dgkbg_enter");
         controlElement.addEventListener("click", function(obj){                    
@@ -101,7 +108,10 @@
             showOrHide(this);
         }, true);
     }
-        
+    /*  
+        Object: DigitalKeyboard, Show or hide keyboard
+        In: String elem - the selector on which the call occurred
+    */
     function showOrHide(elem){
             let el = getKeyboardElement();
             if(el.style.display=="none"){
@@ -122,7 +132,9 @@
                 el.style.display = "none"
             }
     }
-    
+    /*
+        in dev
+    */
     function _addShowListener(sourceElementId){
         let sourceElement = document.querySelector(sourceElementId);
 //        let action = "click";
@@ -137,11 +149,24 @@
           
         };
         }
-    
+    /*  
+        Object: DigitalKeyboard, private, set style on main element
+        In: String elem - the selector on which the call occurred
+    */
+    function _setStyleOnBlock(){
+        let el = document.querySelector(targetElementId);
+        el.style.position = "absolute";
+        el.style.zindex = "99999";
+    }
+    /*  
+        Object: DigitalKeyboard, Create and initialization keybord
+        In: String targetId - the selector on include keyboard on page
+    */
     function init(targetId){
-        this.targetElementId = targetId;
+        targetElementId = targetId;
         document.querySelector(targetId).innerHTML = _templateHTML();
         _setListeners();
+        _setStyleOnBlock();
     }
     /*
         Functions available from outside
